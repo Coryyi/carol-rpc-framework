@@ -1,0 +1,1 @@
+kryo=com.carol.serializer.impl.KryoSerializer

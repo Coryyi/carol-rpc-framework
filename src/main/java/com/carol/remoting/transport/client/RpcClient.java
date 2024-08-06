@@ -1,11 +1,14 @@
 package com.carol.remoting.transport.client;
 
+import com.carol.extension.ExtensionLoader;
 import com.carol.factory.SingletonFactory;
+import com.carol.registry.config.ServiceDiscoveryEnum;
 import com.carol.registry.zk.ServiceDiscovery;
 import com.carol.registry.zk.ZkServiceDiscoveryImpl;
 import com.carol.remoting.dto.RpcRequest;
 import com.carol.remoting.dto.RpcResponse;
 import com.carol.remoting.transport.RpcRequestTransport;
+import com.carol.remoting.transport.codec.ProtocolFrameDecoder;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
@@ -39,7 +42,7 @@ public class RpcClient implements RpcRequestTransport {
      */
     public RpcClient(){
         //服务发现
-        this.serviceDiscovery = SingletonFactory.getInstance(ServiceDiscovery.class);
+        this.serviceDiscovery = ExtensionLoader.getExtensionLoader(ServiceDiscovery.class).getExtension(ServiceDiscoveryEnum.ZK.getName());
         //未处理响应集合 单例
         this.unprocessedRequests = SingletonFactory.getInstance(UnprocessedRequests.class);
         //Channel容器
@@ -48,6 +51,8 @@ public class RpcClient implements RpcRequestTransport {
 
         //处理器
         LoggingHandler LOGGING_HANDLER = new LoggingHandler(LogLevel.DEBUG);
+        ProtocolFrameDecoder protocolFrameDecoder = new ProtocolFrameDecoder();
+
 
         //初始化相关资源
         eventLoopGroup = new NioEventLoopGroup();
@@ -61,6 +66,7 @@ public class RpcClient implements RpcRequestTransport {
                     protected void initChannel(NioSocketChannel ch) throws Exception {
                         ChannelPipeline pipeline = ch.pipeline();
                         pipeline.addLast(LOGGING_HANDLER);
+                        pipeline.addLast(protocolFrameDecoder);
                         //设置写静默事件
                         pipeline.addLast(new IdleStateHandler(0,5,0, TimeUnit.SECONDS));
 

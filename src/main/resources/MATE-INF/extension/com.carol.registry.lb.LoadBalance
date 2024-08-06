@@ -1,0 +1,1 @@
+loadBalance=com.carol.registry.lb.impl.RandomLoadBalance

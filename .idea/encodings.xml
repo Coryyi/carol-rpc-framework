@@ -4,6 +4,8 @@
     <file url="file://$PROJECT_DIR$/rpc-frame-common/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/rpc-frame-common/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/com/carol/compress/Compress.java" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/main/java/com/carol/compress/gzip/GzipCompress.java" charset="GBK" />
     <file url="file://$PROJECT_DIR$/src/main/resources" charset="UTF-8" />
   </component>
 </project>
