@@ -1,5 +1,9 @@
 package com.carol.remoting.transport.server;
 
+import com.carol.factory.SingletonFactory;
+import com.carol.registry.config.RpcServiceConfig;
+import com.carol.registry.provider.ServiceProvider;
+import com.carol.registry.zk.provider.ZkServiceProviderImpl;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
@@ -19,11 +23,23 @@ import lombok.extern.slf4j.Slf4j;
 public class RpcServer {
     //端口
     public static final int SERVER_PORT = 9999;
+    //rpc服务容器 服务provider
+    private final ServiceProvider serviceProvider = SingletonFactory.getInstance(ZkServiceProviderImpl.class);    //
+
+    /**
+     * 发布服务
+     * @param rpcServiceConfig 远程服务配置
+     */
+    public void registerService(RpcServiceConfig rpcServiceConfig){
+        serviceProvider.publishService(rpcServiceConfig);
+    }
+
 
     //处理器
     LoggingHandler LOGGING_HANDLER = new LoggingHandler(LogLevel.DEBUG);
 
     public void start(){
+        //JVM关闭时清理注册中心上的相关服务
 
         //事件循环组
         EventLoopGroup boss = new NioEventLoopGroup();

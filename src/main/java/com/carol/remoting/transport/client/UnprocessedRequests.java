@@ -26,4 +26,9 @@ public class UnprocessedRequests {
             throw new IllegalStateException();
         }
     }
+
+
+    public void put(String requestId, CompletableFuture<RpcResponse<Object>> completableFuture) {
+        UNPROCESSED_RESPONSE_FUTURES.put(requestId,completableFuture);
+    }
 }

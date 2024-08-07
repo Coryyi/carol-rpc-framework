@@ -1,5 +1,8 @@
 package com.carol.serializer;
 
+import com.carol.annotation.SPI;
+
+@SPI
 public interface Serializer {
     /**
      * 序列化
