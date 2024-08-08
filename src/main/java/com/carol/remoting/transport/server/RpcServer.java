@@ -6,6 +6,7 @@ import com.carol.registry.provider.ServiceProvider;
 import com.carol.registry.zk.provider.ZkServiceProviderImpl;
 import com.carol.remoting.transport.codec.ProtocolFrameDecoder;
 import com.carol.remoting.transport.codec.RpcMessageEncode;
+import com.carol.remoting.transport.server.handler.RpcServerHandler;
 import com.carol.util.CustomShutdownHook;
 import com.carol.util.ThreadPoolFactoryUtil;
 import io.netty.bootstrap.ServerBootstrap;
@@ -78,7 +79,7 @@ public class RpcServer {
                             pipeline.addLast(new IdleStateHandler(30, 0, 0, TimeUnit.SECONDS));
                             pipeline.addLast(new RpcMessageEncode());
                             pipeline.addLast(new ProtocolFrameDecoder());
-                            //pipeline.addLast(serviceHandlerGroup, new RpcServerHandler());
+                            pipeline.addLast(serviceHandlerGroup, new RpcServerHandler());
                             pipeline.addLast(LOGGING_HANDLER);
                         }
                     }).bind(SERVER_PORT).sync();
@@ -90,6 +91,7 @@ public class RpcServer {
             log.debug("server closed");
             boss.shutdownGracefully();
             worker.shutdownGracefully();
+            serviceHandlerGroup.shutdownGracefully();
         }
 
     }
