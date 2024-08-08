@@ -27,7 +27,7 @@ public class CustomShutdownHook {
                 CuratorUtils.clearRegistry(CuratorUtils.getZkClient(), inetSocketAddress);
             } catch (UnknownHostException ignored) {
             }
-            //ThreadPoolFactoryUtil.shutDownAllThreadPool();
+            ThreadPoolFactoryUtil.shutDownAllThreadPool();//关闭所有线程池
         }));
     }
 
